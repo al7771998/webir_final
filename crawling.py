@@ -3,11 +3,16 @@
 import concurrent.futures
 import requests                # This is not standard library
 import json
+import sys
 from bs4 import BeautifulSoup
 HTML_PARSER = "html.parser"
-url = 'https://www.ptt.cc/bbs/Gossiping/index.html' ##什麼版可以換
+
+board = sys.argv[1]
+pages = sys.argv[2]
+url = 'https://www.ptt.cc/bbs/' + board + '/index.html'
+#url = 'https://www.ptt.cc/bbs/Gossiping/index.html' ##什麼版可以換
 URLS = []
-for _ in range(1000):
+for _ in range(int(pages)):
   if 'Gossiping' in url:
     r = requests.Session()
     payload = {
@@ -93,8 +98,8 @@ def scrap():
                     docs.append(doc)
                     count += 1
                     
-
-        with open('ptt_gossip_docs2.json', 'w') as outfile:
+        output = 'jsons/ptt_' + board + '_docs.json'
+        with open(output, 'w') as outfile:
             json.dump(docs, outfile)
 def main():
     for url in URLS:
