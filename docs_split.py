@@ -25,7 +25,7 @@ id_reply = {}
 wordCount_all = {}
 wordCount_article = {}
 i=0
-for web in BG_dealed:
+for web in dealed:
 	i+=1
 	#if i>500:
 	#	break
