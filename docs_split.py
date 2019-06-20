@@ -7,6 +7,7 @@ import random
 import csv
 import re
 import operator
+import sys
 from argparse import ArgumentParser
 from collections import Counter
 from zhon.hanzi import punctuation
