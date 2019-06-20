@@ -27,7 +27,8 @@ wordCount_article = {}
 i=0
 for web in dealed:
 	i+=1
-	#if i>500:
+	if i%20 == 0:
+		print(i)
 	#	break
 	#print('\n\n\n\n')
 	#print('======================================================')
@@ -52,22 +53,22 @@ for web in dealed:
 			wordCount.update({word:1})
 		else:
 			wordCount[word] += 1
-	wordCount_article[web['content']] = wordCount
+	wordCount_article[i] = wordCount
 	for ack in web['ack']:
 		#判斷推噓and建立每個id的推噓文章
 		if ack['signal'][0] == '推':
 			if ack['author'] not in id_reply:
-				id_reply.update({ack['author']:{'推':[article_split], '噓':[]}})
+				id_reply.update({ack['author']:{'推':[i], '噓':[]}})
 			else:
-				if article_split not in id_reply[ack['author']]['噓']:
-					id_reply[ack['author']]['推'].append(article_split)
+				if i not in id_reply[ack['author']]['噓']:
+					id_reply[ack['author']]['推'].append(i)
 			sig_pos += 1
 		elif ack['signal'][0] == '噓':
 			if ack['author'] not in id_reply:
-				id_reply.update({ack['author']:{'推':[], '噓':[article_split]}})
+				id_reply.update({ack['author']:{'推':[], '噓':[i]}})
 			else:
-				if article_split not in id_reply[ack['author']]['推']:
-					id_reply[ack['author']]['噓'].append(article_split)
+				if i not in id_reply[ack['author']]['推']:
+					id_reply[ack['author']]['噓'].append(i)
 			sig_neg += 1
 
 		ack['content'] = ''.join(ch for ch in ack['content'] if ch not in punctuation)
@@ -78,15 +79,23 @@ for web in dealed:
 		#print(  ack['signal'] +'  ,  ' + ack['author'] +'  ,  ' ) 
 		#print('  ,  ' + ack['date'] +'  ,  ' + ack['time']  )
 	if web['author'] not in id_article:
-		id_article.update({web['author']:{web['content']:{'推':sig_pos, '噓':sig_neg, \
+		id_article.update({web['author']:{i:{'推':sig_pos, '噓':sig_neg, \
 		'分詞後內文':article_split, '回覆':replies}}})
 	else:
-		id_article[web['author']].update({web['content']:{'推':sig_pos, '噓':sig_neg, \
+		id_article[web['author']].update({i :{'推':sig_pos, '噓':sig_neg, \
 		'分詞後內文':article_split, '回覆':replies}})
 #print(id_article)
-print('------------------------------------------------')
+#print('------------------------------------------------')
 #print(id_reply)
-print('================================================')
-print(wordCount_article)
-print('++++++++++++++++++++++++++++++++++++++++++++++++')
+#print('================================================')
+#print(wordCount_article)
+#print('++++++++++++++++++++++++++++++++++++++++++++++++')
 #print(wordCount_all)
+with open('id_article_BG.json','w') as fw:
+	json.dump(id_article,fw)
+with open('id_reply_BG.json','w') as fw:
+	json.dump(id_reply,fw)
+with open('wordCountArticle_BG.json','w') as fw:
+	json.dump(wordCount_article,fw)
+with open('wordCountAll_BG.json','w') as fw:
+	json.dump(wordCount_all,fw)
