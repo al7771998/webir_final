@@ -7,13 +7,15 @@ import random
 import csv
 import re
 import operator
+import sys
 from argparse import ArgumentParser
 from collections import Counter
 from zhon.hanzi import punctuation
 import string
 jieba.load_userdict('dict.txt.big')
-f = open('ptt_BG_dealed.json')
-BG_dealed = json.load(f)
+file = "ptt_" + sys.argv[1] + "_dealed.json"
+f = open(file)
+dealed = json.load(f)
 f.close()
 #此處設每個文章的推噓數，以及文章及推文斷詞後list跟詞彙個數
 id_article = {}
@@ -24,7 +26,7 @@ id_reply = {}
 wordCount_all = {}
 wordCount_article = {}
 i=0
-for web in BG_dealed:
+for web in dealed:
 	i+=1
 	if i>500:
 		break
@@ -51,7 +53,7 @@ for web in BG_dealed:
 			wordCount.update({word:1})
 		else:
 			wordCount[word] += 1
-	wordCount_article[web['context']] = wordCount
+	wordCount_article[web['content']] = wordCount
 	for ack in web['ack']:
 		#判斷推噓and建立每個id的推噓文章
 		if ack['signal'][0] == '推':
@@ -82,13 +84,13 @@ for web in BG_dealed:
 	else:
 		id_article[web['author']].update({web['content']:{'推':sig_pos, '噓':sig_neg, \
 		'分詞後內文':article_split, '回覆':replies}})
-print(id_article)
-print('------------------------------------------------')
-print(id_reply)
-print('================================================')
-print(wordCount_article)
-print('++++++++++++++++++++++++++++++++++++++++++++++++')
-print(wordCount_all)
+# print(id_article)
+# print('------------------------------------------------')
+# print(id_reply)
+# print('================================================')
+# print(wordCount_article)
+# print('++++++++++++++++++++++++++++++++++++++++++++++++')
+# print(wordCount_all)
 
 
 
