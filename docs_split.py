@@ -36,10 +36,14 @@ for web in dealed:
 	#print(web['title'])
 	#print (web['time'])
 	#print(web['author'])
-	web['content'] = ''.join(ch for ch in web['content'] if ch not in punctuation and ch not in string.punctuation)#.decode("utf-8")
+	#web['content'] = ''.join(ch for ch in web['content'] if ch not in punctuation and ch not in string.punctuation)#.decode("utf-8")
 	tmp = jieba.cut(web['content'],cut_all=False)
 	tmp = '$'.join(tmp)
-	article_split = tmp.split('$')#分詞後的文章內容
+	tmp = tmp.split('$')#分詞後的文章內容
+	article_split = []
+	for ch in tmp:
+		if ch not in punctuation and ch not in string.punctuation and ch != ' ':
+			article_split.append(ch)
 	#print(article_split)
 	#print('====================')
 	sig_pos,sig_neg = 0,0
@@ -72,10 +76,14 @@ for web in dealed:
 					id_reply[ack['author']]['噓'].append(i)
 			sig_neg += 1
 
-		ack['content'] = ''.join(ch for ch in ack['content'] if ch not in punctuation)
+		#ack['content'] = ''.join(ch for ch in ack['content'] if ch not in punctuation)
 		tmp = jieba.cut(ack['content'],cut_all=False)
 		tmp = '$'.join(tmp)
-		ack_split = tmp.split('$')
+		tmp = tmp.split('$')
+		ack_split = []
+		for ch in tmp:
+			if ch not in punctuation and ch not in string.punctuation and ch != ' ':
+				ack_split.append(ch)
 		replies.append({ack['author']:ack_split})
 		#print(  ack['signal'] +'  ,  ' + ack['author'] +'  ,  ' ) 
 		#print('  ,  ' + ack['date'] +'  ,  ' + ack['time']  )
@@ -92,11 +100,11 @@ for web in dealed:
 #print(wordCount_article)
 #print('++++++++++++++++++++++++++++++++++++++++++++++++')
 #print(wordCount_all)
-with open('id_article_BG.json','w') as fw:
+with open('id_article_'+sys.argv[1]+'.json','w') as fw:
 	json.dump(id_article,fw)
-with open('id_reply_BG.json','w') as fw:
+with open('id_reply_'+sys.argv[1]+'.json','w') as fw:
 	json.dump(id_reply,fw)
-with open('wordCountArticle_BG.json','w') as fw:
+with open('wordCountArticle_'+sys.argv[1]+'.json','w') as fw:
 	json.dump(wordCount_article,fw)
-with open('wordCountAll_BG.json','w') as fw:
+with open('wordCountAll_'+sys.argv[1]+'.json','w') as fw:
 	json.dump(wordCount_all,fw)
