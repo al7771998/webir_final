@@ -23,7 +23,6 @@ f.close()
 word = sys.argv[2]
 
 
-i = 0
 for author in dealed:
 	for index in dealed[author]:
 		if word in dealed[author][index]['分詞後內文']:
