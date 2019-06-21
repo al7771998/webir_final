@@ -93,11 +93,11 @@ for web in dealed:
 #print(wordCount_article)
 #print('++++++++++++++++++++++++++++++++++++++++++++++++')
 #print(wordCount_all)
-with open('id_article_BG.json','w') as fw:
+with open('id_article_' + sys.argv[1] + '.json','w') as fw:
 	json.dump(id_article,fw)
-with open('id_reply_BG.json','w') as fw:
+with open('id_reply_' + sys.argv[1] + '.json','w') as fw:
 	json.dump(id_reply,fw)
-with open('wordCountArticle_BG.json','w') as fw:
+with open('wordCountArticle_' + sys.argv[1] + '.json','w') as fw:
 	json.dump(wordCount_article,fw)
-with open('wordCountAll_BG.json','w') as fw:
+with open('wordCountAll_' + sys.argv[1] + '.json','w') as fw:
 	json.dump(wordCount_all,fw)
